@@ -1,13 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    background: #33b6fa !important;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    color: #fff;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.flexColumnCenter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
