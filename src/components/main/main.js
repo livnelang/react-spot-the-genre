@@ -11,7 +11,6 @@ export default class Main extends PureComponent {
             artists: null,
             currentArtist: null
         }
-        // this.getRandomArtist = this.getRandomArtist.bind(this);
     }
 
     componentDidMount() {
@@ -24,8 +23,8 @@ export default class Main extends PureComponent {
             .then((response) => {
                 // console.log(response);
                 this.setState({ artists: response.data });
-                this.setState({ currentArtist: this.state.artists[0] });
-                this.setGuesses()
+                var currentArtist = this.prepareCurrentArtist(this.state.artists[0]);
+                this.setState({ currentArtist: currentArtist });
             })
             .catch((error) => {
                 console.log(error);
@@ -35,43 +34,50 @@ export default class Main extends PureComponent {
 
 
 
-    setGuesses() {
-        var randomCurrentGenreIndex = Math.floor(Math.random() * (this.state.currentArtist.genres.length - 1));
-        // this.setState({ currentArtist.guesses = {}});
+    prepareCurrentArtist(artist) {
+        var randomCurrentGenreIndex = Math.floor(Math.random() * (artist.genres.length - 1));
+        artist.guesses = {};
+        artist.guesses[artist.genres[randomCurrentGenreIndex]] = true;
 
-        this.state.currentArtist.guesses = {};
-        this.state.currentArtist.guesses[this.state.currentArtist.genres[randomCurrentGenreIndex]] = true;
+
 
         var randomGenre;
-        while (Object.keys(this.state.currentArtist.guesses).length   < 3      ) {
+        while (Object.keys(artist.guesses).length < 3) {
             randomGenre = this.state.allGenres[Math.floor(Math.random() * this.state.allGenres.length)];
             //check that is not one the artist genres, and - check that it is not already inside the guesses object
-            if (this.isSuitableGuess(randomGenre)) {
+            if (this.isSuitableGuess(artist, randomGenre)) {
                 console.log('candidate genre: ' + randomGenre);
-                this.state.currentArtist.guesses[randomGenre] = false;
+                artist.guesses[randomGenre] = false;
             }
         }
+        return artist;
     }
 
-    isSuitableGuess(genre) {
-        if (!this.state.currentArtist.genres.includes(genre) && this.state.currentArtist.guesses[genre] == null) {
+    isSuitableGuess(artist, genre) {
+        if (!artist.genres.includes(genre) && artist.guesses[genre] == null) {
             return true;
         }
     }
 
     render() {
-        return (
-            <div className="mainBoard">
-                {this.state.currentArtist ?
-                    <div>
+        if (this.state.currentArtist) {
+
+            return (
+                <div className="mainBoard flex">
+                    <div className="artistImageBox">
                         <img src={this.state.currentArtist.images[0].url} alt="" />
-                        {this.state.currentArtist.genres.map(function (genre, index) {
-                            return <p key={index}>{genre}</p>
-                        }, this)
-                        }
                     </div>
-                    : null}
-            </div>
-        );
+                    <div className="guesses">
+                        {Object.keys(this.state.currentArtist.guesses).map((keyName, i) => {
+                            return <p value={this.state.currentArtist.guesses[keyName]} key={i}>{keyName}</p>
+                        }, this)
+                        }   
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (null)
+        }
     }
 }
