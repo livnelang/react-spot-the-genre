@@ -11,6 +11,8 @@
     "express": "^4.17.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.4",
     "spotify-web-api-node": "^4.0.0"
   },
   "scripts": {

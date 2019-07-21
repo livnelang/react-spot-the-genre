@@ -6,3 +6,16 @@
 .topPanel p {
     text-align: center;
 }
+
+
+
+
+ /* Small Mobiles */
+ @media only screen and (max-width: 480px) {
+
+    .topPanel h1 {
+        font-size: 42px;
+    }
+    
+  }
+  

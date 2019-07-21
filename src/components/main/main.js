@@ -1,19 +1,16 @@
 import React, { PureComponent } from "react";
+import { connect } from "react-redux";
+
 import axios from 'axios';
 import './main.css';
 import jsonData from './genres.json';
+import { setArtists, setCurrentArtist, setAllGenres } from "../../actions/index";
 
-export default class Main extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            allGenres: jsonData.genres,
-            artists: null,
-            currentArtist: null
-        }
-    }
+
+class Main extends PureComponent {
 
     componentDidMount() {
+        this.props.setAllGenres(jsonData.genres);
         this.getRandomArtist();
     }
 
@@ -21,10 +18,12 @@ export default class Main extends PureComponent {
     getRandomArtist() {
         axios.get('/getRandomArtist')
             .then((response) => {
-                // console.log(response);
-                this.setState({ artists: response.data });
-                var currentArtist = this.prepareCurrentArtist(this.state.artists[0]);
-                this.setState({ currentArtist: currentArtist });
+                //set store (state) artists
+                this.props.setArtists(response.data);
+
+                //set store (state) currentArtist
+                var currentArtist = this.prepareCurrentArtist(this.props.artists[0]);
+                this.props.setCurrentArtist(currentArtist);
             })
             .catch((error) => {
                 console.log(error);
@@ -43,7 +42,7 @@ export default class Main extends PureComponent {
 
         var randomGenre;
         while (Object.keys(artist.guesses).length < 3) {
-            randomGenre = this.state.allGenres[Math.floor(Math.random() * this.state.allGenres.length)];
+            randomGenre = this.props.allGenres[Math.floor(Math.random() * this.props.allGenres.length)];
             //check that is not one the artist genres, and - check that it is not already inside the guesses object
             if (this.isSuitableGuess(artist, randomGenre)) {
                 console.log('candidate genre: ' + randomGenre);
@@ -60,18 +59,18 @@ export default class Main extends PureComponent {
     }
 
     render() {
-        if (this.state.currentArtist) {
+        if (this.props.currentArtist) {
 
             return (
                 <div className="mainBoard flex">
                     <div className="artistImageBox">
-                        <img src={this.state.currentArtist.images[0].url} alt="" />
+                        <img src={this.props.currentArtist.images[0].url} alt="" />
                     </div>
                     <div className="guesses">
-                        {Object.keys(this.state.currentArtist.guesses).map((keyName, i) => {
-                            return <p value={this.state.currentArtist.guesses[keyName]} key={i}>{keyName}</p>
+                        {Object.keys(this.props.currentArtist.guesses).map((keyName, i) => {
+                            return <p value={this.props.currentArtist.guesses[keyName]} key={i}>{keyName}</p>
                         }, this)
-                        }   
+                        }
                     </div>
                 </div>
             );
@@ -81,3 +80,24 @@ export default class Main extends PureComponent {
         }
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        allGenres: state.allGenres,
+        artists: state.artists,
+        currentArtist: state.currentArtist
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+
+    return {
+        setArtists: artists => dispatch(setArtists(artists)),
+        setCurrentArtist: artist => dispatch(setCurrentArtist(artist)),
+        setAllGenres: genresObject => dispatch(setAllGenres(genresObject))
+    };
+
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

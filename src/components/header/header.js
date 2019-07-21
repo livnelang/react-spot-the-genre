@@ -8,7 +8,7 @@ export default class Header extends PureComponent {
     return (
       <div className="topPanel flexColumnCenter">
         <h1>Spot the genre!</h1>
-        <p>   Welcome aboard! try to guess which genre this artist is playing!    </p>
+        <p>   Welcome aboard! Try to guess which genre this artist is playing!    </p>
       </div>
     );
   }
