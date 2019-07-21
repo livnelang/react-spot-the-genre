@@ -1,4 +1,3 @@
-export const SET_ALL_GENRES = "SET_ALL_GENRES";
 export const ADD_ARTICLE = "ADD_ARTICLE";
 export const SET_ARTISTS = "SET_ARTISTS";
 export const SET_CURRENT_ARTIST = "SET_CURRENT_ARTIST";

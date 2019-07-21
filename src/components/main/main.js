@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 
 import axios from 'axios';
 import './main.css';
-import jsonData from './genres.json';
-import { setArtists, setCurrentArtist, setAllGenres } from "../../actions/index";
+import Guesses from "../guesses/guesses"
+import ArtistBox from "../artistBox/artistBox"
+import { setArtists, setCurrentArtist } from "../../actions/index";
 
 
 class Main extends PureComponent {
 
     componentDidMount() {
-        this.props.setAllGenres(jsonData.genres);
         this.getRandomArtist();
     }
 
@@ -39,7 +39,6 @@ class Main extends PureComponent {
         artist.guesses[artist.genres[randomCurrentGenreIndex]] = true;
 
 
-
         var randomGenre;
         while (Object.keys(artist.guesses).length < 3) {
             randomGenre = this.props.allGenres[Math.floor(Math.random() * this.props.allGenres.length)];
@@ -60,18 +59,10 @@ class Main extends PureComponent {
 
     render() {
         if (this.props.currentArtist) {
-
             return (
                 <div className="mainBoard flex">
-                    <div className="artistImageBox">
-                        <img src={this.props.currentArtist.images[0].url} alt="" />
-                    </div>
-                    <div className="guesses">
-                        {Object.keys(this.props.currentArtist.guesses).map((keyName, i) => {
-                            return <p value={this.props.currentArtist.guesses[keyName]} key={i}>{keyName}</p>
-                        }, this)
-                        }
-                    </div>
+                    <ArtistBox />
+                    <Guesses />
                 </div>
             );
         }
@@ -93,8 +84,7 @@ const mapDispatchToProps = (dispatch) => {
 
     return {
         setArtists: artists => dispatch(setArtists(artists)),
-        setCurrentArtist: artist => dispatch(setCurrentArtist(artist)),
-        setAllGenres: genresObject => dispatch(setAllGenres(genresObject))
+        setCurrentArtist: artist => dispatch(setCurrentArtist(artist))
     };
 
 };

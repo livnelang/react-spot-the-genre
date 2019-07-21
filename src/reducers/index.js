@@ -1,7 +1,10 @@
-import { SET_ALL_GENRES, SET_ARTISTS, SET_CURRENT_ARTIST } from "../constants/action-types";
+import { SET_ARTISTS, SET_CURRENT_ARTIST } from "../constants/action-types";
+import jsonData from './genres.json';
+
+
 
 const initialState = {
-    allGenres: {},
+    allGenres: jsonData.genres,
     score: 0,
     artists: [],
     currentArtist: null,
@@ -9,11 +12,6 @@ const initialState = {
 };
 
 function rootReducer(state = initialState, action) {
-    if (action.type === SET_ALL_GENRES) {
-        return Object.assign({}, state, {
-            allGenres: action.payload
-        });
-    }
 
     if (action.type === SET_ARTISTS) {
         return Object.assign({}, state, {
@@ -26,6 +24,7 @@ function rootReducer(state = initialState, action) {
             currentArtist: action.payload
         });
     }
+
     return state;
 }
 

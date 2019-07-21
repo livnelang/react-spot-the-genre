@@ -1,0 +1,41 @@
+.guesses {
+    display: grid;
+    align-items: center;
+    text-align: center;
+}
+
+.guesses p {
+    min-width: 150px;
+    border-radius: 50px;
+    border: 1px solid white;
+    padding: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+    text-transform: capitalize;
+}
+
+.guesses p:hover {
+    opacity: 1;
+}
+
+
+
+
+/* Tablets */
+@media only screen and (max-width: 700px) {
+
+    .guesses p {
+        width: auto;
+    }
+    
+  }
+
+
+  /* Mobiles */
+  @media only screen and (max-width: 550px) {
+  
+    .guesses p {
+        padding: 10px;
+    }
+    
+  }

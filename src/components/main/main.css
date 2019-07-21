@@ -9,25 +9,7 @@
     height: 200px;
 }
 
-.guesses {
-    display: grid;
-    align-items: center;
-    text-align: center;
-}
 
-.guesses p {
-    min-width: 150px;
-    border-radius: 50px;
-    border: 1px solid white;
-    padding: 20px;
-    cursor: pointer;
-    opacity: 0.7;
-    text-transform: capitalize;
-}
-
-.guesses p:hover {
-    opacity: 1;
-}
 
 .artistImageBox {
     display: flex;
@@ -47,10 +29,6 @@
     .mainBoard  {
         width: 90%;
     }
-
-    .guesses p {
-        width: auto;
-    }
     
   }
 
@@ -62,10 +40,6 @@
         border-radius: 50%;
         width: 150px;
         height: 150px;
-    }
-
-    .guesses p {
-        padding: 10px;
     }
     
   }
