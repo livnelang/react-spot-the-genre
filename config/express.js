@@ -45,6 +45,18 @@ module.exports = function () {
 
     spotifyApi.clientCredentialsGrant().then(
         function (data) {
+            var today = new Date();
+            today.setSeconds(today.getSeconds() + (data.body['expires_in']));
+
+            //for testsof async/await in routes.js
+            today.setSeconds(today.getSeconds() + 10);
+
+
+            spotifyApi['expireDateTime'] = today.getTime();
+            console.log('expires in: ' + spotifyApi['expireDateTime']);
+
+
+
             spotifyApi.setAccessToken(data.body['access_token']);
             require('./routes')(app, path, spotifyApi);
         },

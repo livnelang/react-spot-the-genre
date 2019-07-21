@@ -11,7 +11,8 @@ var randomRequestOptions = {
     }
 };
 
-module.exports = function (app, path, spotifyApi) {
+module.exports = async function (app, path, spotifyApi) {
+
     setRandomArtistTotal();
 
 
@@ -25,7 +26,11 @@ module.exports = function (app, path, spotifyApi) {
     //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
     // }
 
-    function getRandomArtist(req, res) {
+    async function getRandomArtist(req, res) {
+        //verify access token
+        await checkAccessToken(spotifyApi);
+
+
         var currentNumber;
         while (typeof currentNumber !== 'number') {
             var rand = Math.floor(Math.random() * spotifyCache.total);
@@ -104,4 +109,39 @@ function getImagedArtists(artists) {
     });
 
     return image_artists;
+}
+
+
+
+function checkAccessToken(spotifyApi) {
+
+    return new Promise(function (resolve, reject) {
+        console.log('at refresh token function!');
+
+
+        //verify access token
+        if (new Date().getTime() < spotifyApi['expireDateTime']) {
+            return resolve();
+        }
+
+
+        // Retrieve an access token.
+        spotifyApi.clientCredentialsGrant().then(
+            function (data) {
+                var today = new Date();
+                today.setSeconds(today.getSeconds() + (data.body['expires_in']));
+
+                spotifyApi['expireDateTime'] = today.getTime();
+                console.log('expires in: ' + spotifyApi['expireDateTime']);
+
+                spotifyApi.setAccessToken(data.body['access_token']);
+                return resolve();
+            },
+            function (err) {
+                console.log('Something went wrong when retrieving an access token', err.message
+                );
+                return resolve();
+            });
+
+    })
 }

@@ -3,8 +3,10 @@ import { connect } from "react-redux";
 
 import axios from 'axios';
 import './main.css';
-import Guesses from "../guesses/guesses"
-import ArtistBox from "../artistBox/artistBox"
+import Guesses from "../guesses/guesses";
+import ArtistBox from "../artistBox/artistBox";
+import AnswerDialog from "../answerDialog/answerDialog";
+
 import { setArtists, setCurrentArtist } from "../../actions/index";
 
 
@@ -22,15 +24,22 @@ class Main extends PureComponent {
                 this.props.setArtists(response.data);
 
                 //set store (state) currentArtist
-                var currentArtist = this.prepareCurrentArtist(this.props.artists[0]);
-                this.props.setCurrentArtist(currentArtist);
+                // var currentArtist = this.prepareCurrentArtist(this.props.artists[0]);
+                
+                this.props.artists.forEach(artist => {
+                    this.prepareCurrentArtist(artist);
+                });
+
+
+                // this.props.setCurrentArtist(currentArtist);
+
+                //after the enrichment
+                this.props.setCurrentArtist(this.props.artists[0]);
             })
             .catch((error) => {
                 console.log(error);
             });
     }
-
-
 
 
     prepareCurrentArtist(artist) {
@@ -44,11 +53,11 @@ class Main extends PureComponent {
             randomGenre = this.props.allGenres[Math.floor(Math.random() * this.props.allGenres.length)];
             //check that is not one the artist genres, and - check that it is not already inside the guesses object
             if (this.isSuitableGuess(artist, randomGenre)) {
-                console.log('candidate genre: ' + randomGenre);
+                // console.log('candidate genre: ' + randomGenre);
                 artist.guesses[randomGenre] = false;
             }
         }
-        return artist;
+        // return artist;
     }
 
     isSuitableGuess(artist, genre) {
@@ -58,7 +67,7 @@ class Main extends PureComponent {
     }
 
     render() {
-        if (this.props.currentArtist) {
+        if (this.props.currentArtist && !this.props.showGuessResult.displayMessage) {
             return (
                 <div className="mainBoard flex">
                     <ArtistBox />
@@ -66,8 +75,15 @@ class Main extends PureComponent {
                 </div>
             );
         }
+        else if (this.props.showGuessResult.displayMessage) {
+            return (
+                <AnswerDialog />
+            )
+        }
         else {
-            return (null)
+            return (
+                null
+            )
         }
     }
 }
@@ -76,7 +92,8 @@ const mapStateToProps = (state) => {
     return {
         allGenres: state.allGenres,
         artists: state.artists,
-        currentArtist: state.currentArtist
+        currentArtist: state.currentArtist,
+        showGuessResult: state.showGuessResult
     };
 };
 

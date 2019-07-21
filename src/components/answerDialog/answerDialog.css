@@ -1,0 +1,14 @@
+.successDialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border: 1px solid white;
+    border-radius: 100%;
+}
+
+
+.failedDialog {
+
+}

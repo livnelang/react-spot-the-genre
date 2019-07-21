@@ -1,5 +1,8 @@
 .wrapper {
-    display: flex;
+    display: grid;
     margin: 0 auto;
     max-width: 90%;
+    justify-items: center;
+    justify-content: center;
+    grid-gap: 30px;
 }
