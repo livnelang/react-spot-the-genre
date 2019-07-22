@@ -34,7 +34,7 @@ class Main extends PureComponent {
                 // this.props.setCurrentArtist(currentArtist);
 
                 //after the enrichment
-                this.props.setCurrentArtist(this.props.artists[0]);
+                this.props.setCurrentArtist();
             })
             .catch((error) => {
                 console.log(error);
@@ -93,7 +93,8 @@ const mapStateToProps = (state) => {
         allGenres: state.allGenres,
         artists: state.artists,
         currentArtist: state.currentArtist,
-        showGuessResult: state.showGuessResult
+        showGuessResult: state.showGuessResult,
+        artistCounter: state.artistCounter
     };
 };
 
@@ -101,7 +102,7 @@ const mapDispatchToProps = (dispatch) => {
 
     return {
         setArtists: artists => dispatch(setArtists(artists)),
-        setCurrentArtist: artist => dispatch(setCurrentArtist(artist))
+        setCurrentArtist: () => dispatch(setCurrentArtist())
     };
 
 };

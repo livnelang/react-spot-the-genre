@@ -6,14 +6,13 @@ import { setShowGuessResult, setCurrentArtist, setArtistCounter } from "../../ac
 class Guesses extends PureComponent {
 
     onGuessClick(isCorrectGenre) {
-        console.log('guess is .. : ' + isCorrectGenre);
 
         //todo: wrap it in setTimeout or equivalent
         this.props.setShowGuessResult({ displayMessage: true, success: isCorrectGenre });
         if (isCorrectGenre) {
             // update to next artist, artistCounter update
-            this.props.setArtistCounter(this.props.artistCounter + 1);
-            this.props.setCurrentArtist(this.props.artists[this.props.artistCounter]);
+            this.props.setArtistCounter();
+            this.props.setCurrentArtist();
 
             setTimeout(() => {
                 this.props.setShowGuessResult({ displayMessage: false, success: false });
@@ -50,8 +49,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setShowGuessResult: guessResult => dispatch(setShowGuessResult(guessResult)),
-        setArtistCounter: updatedCounter => dispatch(setArtistCounter(updatedCounter)),
-        setCurrentArtist: artist => dispatch(setCurrentArtist(artist))
+        setArtistCounter: () => dispatch(setArtistCounter()),
+        setCurrentArtist: () => dispatch(setCurrentArtist())
     };
 };
 

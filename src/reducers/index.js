@@ -23,7 +23,7 @@ function rootReducer(state = initialState, action) {
 
     if (action.type === SET_CURRENT_ARTIST) {
         return Object.assign({}, state, {
-            currentArtist: action.payload
+            currentArtist: state.artists[state.artistCounter]
         });
     }
 
@@ -35,7 +35,7 @@ function rootReducer(state = initialState, action) {
 
     if (action.type === SET_ARTIST_COUNTER) {
         return Object.assign({}, state, {
-            artistCounter: action.payload
+            artistCounter: state.artistCounter + 1
         });
     }
 
