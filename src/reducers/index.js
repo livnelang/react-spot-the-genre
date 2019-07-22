@@ -1,4 +1,4 @@
-import { SET_ARTISTS, SET_CURRENT_ARTIST, SET_SHOW_GUESS_RESULT, SET_ARTIST_COUNTER } from "../constants/action-types";
+import { SET_ARTISTS, SET_CURRENT_ARTIST, SET_SHOW_GUESS_RESULT, SET_ARTIST_COUNTER, INCREMENT_SCORE, RESET_GAME } from "../constants/action-types";
 import jsonData from './genres.json';
 
 
@@ -36,6 +36,18 @@ function rootReducer(state = initialState, action) {
     if (action.type === SET_ARTIST_COUNTER) {
         return Object.assign({}, state, {
             artistCounter: state.artistCounter + 1
+        });
+    }
+    if (action.type === INCREMENT_SCORE) {
+        return Object.assign({}, state, {
+            score: state.score + 1
+        });
+    }
+    if (action.type === RESET_GAME) {
+        return Object.assign({}, state, {
+            score: 0,
+            artistCounter: 0,
+            showGuessResult: { displayMessage: false, success: false }
         });
     }
 

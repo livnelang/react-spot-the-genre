@@ -2,30 +2,26 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import './answerDialog.css';
 import { FaThumbsUp } from 'react-icons/fa';
+import { resetGame } from "../../actions/index";
 
 class AnswerDialog extends PureComponent {
 
-    // onGuessClick(isCorrectGenre) {
-    //     console.log('guess is .. : ' + isCorrectGenre);
-
-    //     //todo: wrap it in setTimeout or equivalent
-    //     this.props.setShowGuessResult({ displayMessage: true, success: isCorrectGenre });
-    // }
+    playAgain() {
+        //todo: set currentartist to 0
+        // set score to 0
+        // hide answerDialog, show screen
+        this.props.resetGame();
+    }
 
 
     render() {
-        // return (
-        //     <div className="answerDialog">
-        //       <p>You answered: {this.props.showGuessResult.success.toString()}</p>
-        //     </div>
-        // );
 
         if (this.props.showGuessResult.success) {
             return (
                 <div className="successDialog">
                     {/* <p>You answered: {this.props.showGuessResult.success.toString()}</p> */}
                     <span>
-                        <FaThumbsUp size="50"/>
+                        <FaThumbsUp size="50" />
                     </span>
                 </div>
             )
@@ -33,7 +29,8 @@ class AnswerDialog extends PureComponent {
         else {
             return (
                 <div className="failedDialog">
-                    <p>No matter, please try again!</p>
+                    <p>your score: {this.props.score}</p>
+                    <p className="playAgain" onClick={() => { this.playAgain() }}>Play again?</p>
                 </div>
             )
         }
@@ -45,16 +42,17 @@ class AnswerDialog extends PureComponent {
 
 const mapStateToProps = (state) => {
     return {
-        showGuessResult: state.showGuessResult
+        showGuessResult: state.showGuessResult,
+        score: state.score,
     };
 };
 
 
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         setShowGuessResult: guessResult => dispatch(setShowGuessResult(guessResult)),
-//     };
-// };
+const mapDispatchToProps = (dispatch) => {
+    return {
+        resetGame: () => dispatch(resetGame()),
+    };
+};
 
 
-export default connect(mapStateToProps, null)(AnswerDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(AnswerDialog);

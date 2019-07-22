@@ -11,7 +11,12 @@
 
 
 .failedDialog {
+    text-align: center;
+}
 
+.failedDialog .playAgain {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 

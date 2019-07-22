@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import './guesses.css';
-import { setShowGuessResult, setCurrentArtist, setArtistCounter } from "../../actions/index";
+import { setShowGuessResult, setCurrentArtist, setArtistCounter, incrementScore } from "../../actions/index";
 
 class Guesses extends PureComponent {
 
@@ -10,6 +10,9 @@ class Guesses extends PureComponent {
         //todo: wrap it in setTimeout or equivalent
         this.props.setShowGuessResult({ displayMessage: true, success: isCorrectGenre });
         if (isCorrectGenre) {
+            //increment score 
+            this.props.incrementScore();
+
             // update to next artist, artistCounter update
             this.props.setArtistCounter();
             this.props.setCurrentArtist();
@@ -24,10 +27,17 @@ class Guesses extends PureComponent {
     render() {
         return (
             <div className="guesses">
-                {Object.keys(this.props.guesses).map((keyName, i) => {
+                {/* {Object.keys(this.props.guesses).map((keyName, i) => {
                     return <p onClick={() => this.onGuessClick(this.props.guesses[keyName])}
                         value={this.props.guesses[keyName]}
                         key={i}>{keyName}</p>
+                }, this)
+                } */}
+
+                {this.props.guesses.map(function (guess, index) {
+                    return <p onClick={() => this.onGuessClick(guess.value)}
+                        value={guess.value}
+                        key={index}>{guess.name}</p>
                 }, this)
                 }
             </div>
@@ -50,7 +60,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setShowGuessResult: guessResult => dispatch(setShowGuessResult(guessResult)),
         setArtistCounter: () => dispatch(setArtistCounter()),
-        setCurrentArtist: () => dispatch(setCurrentArtist())
+        setCurrentArtist: () => dispatch(setCurrentArtist()),
+        incrementScore: () => dispatch(incrementScore())
     };
 };
 
