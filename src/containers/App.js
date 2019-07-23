@@ -4,7 +4,12 @@ import Header from "../components/header/header"
 import Main from "../components/main/main"
 
 export default class App extends PureComponent {
- 
+
+
+  componentDidMount() {
+    document.title = "Spot the genre";
+  }
+
 
   render() {
     return (
