@@ -17,7 +17,7 @@ module.exports = async function (app, path, spotifyApi) {
 
 
     // C.R.U.D operations
-    app.get('/*', fetchIndex);
+    app.get('/', fetchIndex);
     app.get('/getRandomArtist', getRandomArtist);
 
 
