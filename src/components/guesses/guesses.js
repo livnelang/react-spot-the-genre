@@ -17,6 +17,8 @@ class Guesses extends PureComponent {
             this.props.setArtistCounter();
             this.props.setCurrentArtist();
 
+
+            window.confetti.start(1200);
             setTimeout(() => {
                 this.props.setShowGuessResult({ displayMessage: false, success: false });
             }, 1500)
