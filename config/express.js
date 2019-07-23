@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 var SpotifyWebApi = require('spotify-web-api-node');
-var request = require('request'); // "Request" library
 
 // dev: load environment vars from file
 if (process.env.NODE_ENV !== 'production') {
