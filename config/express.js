@@ -7,6 +7,8 @@ var request = require('request'); // "Request" library
 // dev: load environment vars from file
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
+} else {
+    console.log('this is prod');
 }
 
 // credentials
@@ -49,7 +51,7 @@ module.exports = function () {
             today.setSeconds(today.getSeconds() + (data.body['expires_in']));
 
             //for testsof async/await in routes.js
-            today.setSeconds(today.getSeconds() + 10);
+            // today.setSeconds(today.getSeconds() + 10);
 
 
             spotifyApi['expireDateTime'] = today.getTime();

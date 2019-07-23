@@ -22,9 +22,9 @@ module.exports = async function (app, path, spotifyApi) {
 
 
 
-    // function fetchIndex(req, res) {
-    //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
-    // }
+    function fetchIndex(req, res) {
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    }
 
     async function getRandomArtist(req, res) {
         //verify access token
@@ -49,8 +49,8 @@ module.exports = async function (app, path, spotifyApi) {
 
 
         request.get(offsetLimitRequestOptions, function (error, response, body) {
-            console.log(spotifyApi.getAccessToken());
-            console.log(offsetLimitRequestOptions.url);
+            // console.log(spotifyApi.getAccessToken());
+            // console.log(offsetLimitRequestOptions.url);
             if (!error && response.statusCode === 200) {
                 var data = JSON.parse(body);
                 if (data.artists) {
@@ -116,7 +116,6 @@ function getImagedArtists(artists) {
 function checkAccessToken(spotifyApi) {
 
     return new Promise(function (resolve, reject) {
-        console.log('at refresh token function!');
 
 
         //verify access token
@@ -124,7 +123,7 @@ function checkAccessToken(spotifyApi) {
             return resolve();
         }
 
-
+        console.log('at refresh token function!, refresh is needed');
         // Retrieve an access token.
         spotifyApi.clientCredentialsGrant().then(
             function (data) {
@@ -132,7 +131,7 @@ function checkAccessToken(spotifyApi) {
                 today.setSeconds(today.getSeconds() + (data.body['expires_in']));
 
                 spotifyApi['expireDateTime'] = today.getTime();
-                console.log('expires in: ' + spotifyApi['expireDateTime']);
+                // console.log('expires in: ' + spotifyApi['expireDateTime']);
 
                 spotifyApi.setAccessToken(data.body['access_token']);
                 return resolve();
