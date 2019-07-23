@@ -39,7 +39,7 @@ module.exports = async function (app, path, spotifyApi) {
                 currentNumber = rand;
             }
         }
-        console.log('selectednum: ' + currentNumber);
+        // console.log('selectednum: ' + currentNumber);
 
 
         var limitOffsetParams = "&limit=30";
