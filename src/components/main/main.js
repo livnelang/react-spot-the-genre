@@ -18,7 +18,7 @@ class Main extends PureComponent {
 
 
     getRandomArtist() {
-        axios.get('/getRandomArtist')
+        axios.post('/getRandomArtist')
             .then((response) => {
                 //set store (state) artists
                 this.props.setArtists(response.data);

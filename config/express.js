@@ -5,11 +5,13 @@ var SpotifyWebApi = require('spotify-web-api-node');
 var request = require('request'); // "Request" library
 
 // dev: load environment vars from file
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-} else {
-    console.log('this is prod');
-}
+// if (process.env.NODE_ENV !== 'production') {
+//     require('dotenv').config();
+// } else {
+//     console.log('this is prod');
+// }
+
+require('dotenv').config();
 
 // credentials
 var spotifyApi = new SpotifyWebApi({
