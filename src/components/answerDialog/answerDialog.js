@@ -2,15 +2,22 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import './answerDialog.css';
 import { FaThumbsUp } from 'react-icons/fa';
-import { resetGame } from "../../actions/index";
+import { shuffleArtists, resetGame, setCurrentArtist } from "../../actions/index";
 
 class AnswerDialog extends PureComponent {
 
+
     playAgain() {
-        //todo: set currentartist to 0
+
+        //shuffle artists array ( make it interesting )
+        this.props.shuffleArtists();
+
         // set score to 0
         // hide answerDialog, show screen
         this.props.resetGame();
+
+        // dispatch currentArtist actiobn
+        this.props.setCurrentArtist();
     }
 
 
@@ -50,7 +57,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        shuffleArtists: () => dispatch(shuffleArtists()),
         resetGame: () => dispatch(resetGame()),
+        setCurrentArtist: () => dispatch(setCurrentArtist())
     };
 };
 

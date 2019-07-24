@@ -7,7 +7,7 @@ import Guesses from "../guesses/guesses";
 import ArtistBox from "../artistBox/artistBox";
 import AnswerDialog from "../answerDialog/answerDialog";
 
-import { setArtists, setCurrentArtist } from "../../actions/index";
+import { setArtists, shuffleArtists, setCurrentArtist } from "../../actions/index";
 
 
 class Main extends PureComponent {
@@ -23,17 +23,16 @@ class Main extends PureComponent {
                 //set store (state) artists
                 this.props.setArtists(response.data);
 
-                //set store (state) currentArtist
-                // var currentArtist = this.prepareCurrentArtist(this.props.artists[0]);
-
+                // prepare artists shuffled guesses
                 this.props.artists.forEach(artist => {
-                    this.prepareCurrentArtist(artist);
+                    this.prepareArtistsGuesses(artist);
                 });
 
 
-                // this.props.setCurrentArtist(currentArtist);
+                //shuffle artists array ( make it interesting )
+                this.props.shuffleArtists();
 
-                //after the enrichment
+                //set current Artist( 0 at start)
                 this.props.setCurrentArtist();
             })
             .catch((error) => {
@@ -42,7 +41,8 @@ class Main extends PureComponent {
     }
 
 
-    prepareCurrentArtist(artist) {
+    
+    prepareArtistsGuesses(artist) {
         var randomCurrentGenreIndex = Math.floor(Math.random() * (artist.genres.length - 1));
         artist.guesses = [];
         var correctGuess = {
@@ -119,7 +119,8 @@ const mapDispatchToProps = (dispatch) => {
 
     return {
         setArtists: artists => dispatch(setArtists(artists)),
-        setCurrentArtist: () => dispatch(setCurrentArtist())
+        setCurrentArtist: () => dispatch(setCurrentArtist()),
+        shuffleArtists: () => dispatch(shuffleArtists())
     };
 
 };

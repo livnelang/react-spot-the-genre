@@ -1,4 +1,4 @@
-import { SET_ARTISTS, SET_CURRENT_ARTIST, SET_SHOW_GUESS_RESULT, SET_ARTIST_COUNTER, INCREMENT_SCORE, RESET_GAME } from "../constants/action-types";
+import { SET_ARTISTS, SET_CURRENT_ARTIST, SET_SHOW_GUESS_RESULT, SET_ARTIST_COUNTER, INCREMENT_SCORE, SHUFFLE_ARTISTS, RESET_GAME } from "../constants/action-types";
 import jsonData from './genres.json';
 
 
@@ -43,6 +43,11 @@ function rootReducer(state = initialState, action) {
             score: state.score + 1
         });
     }
+    if (action.type === SHUFFLE_ARTISTS) {
+        return Object.assign({}, state, {
+            artists: arrayShuffle(state.artists)
+        });
+    }
     if (action.type === RESET_GAME) {
         return Object.assign({}, state, {
             score: 0,
@@ -55,3 +60,14 @@ function rootReducer(state = initialState, action) {
 }
 
 export default rootReducer;
+
+
+
+
+function arrayShuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
