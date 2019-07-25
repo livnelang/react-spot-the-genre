@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import './guesses.css';
-import { setShowGuessResult, setCurrentArtist, setArtistCounter, incrementScore } from "../../actions/index";
+import { setShowGuessResult, setCurrentArtist, setArtistCounter, incrementScore, setUserFinishedGame } from "../../actions/index";
 
 class Guesses extends PureComponent {
 
@@ -14,6 +14,11 @@ class Guesses extends PureComponent {
             this.props.incrementScore();
 
             // update to next artist, artistCounter update
+            if (this.userWon()) {
+                this.props.setUserFinishedGame(true);
+                return;
+            }
+
             this.props.setArtistCounter();
             this.props.setCurrentArtist();
 
@@ -26,16 +31,17 @@ class Guesses extends PureComponent {
     }
 
 
+    userWon() {
+        if (this.props.artistCounter === this.props.artists.length -1) {
+            //declare game over, and user won!
+            return true;
+        }
+    }
+
+
     render() {
         return (
             <div className="guesses">
-                {/* {Object.keys(this.props.guesses).map((keyName, i) => {
-                    return <p onClick={() => this.onGuessClick(this.props.guesses[keyName])}
-                        value={this.props.guesses[keyName]}
-                        key={i}>{keyName}</p>
-                }, this)
-                } */}
-
                 {this.props.guesses.map(function (guess, index) {
                     return <p onClick={() => this.onGuessClick(guess.value)}
                         value={guess.value}
@@ -63,7 +69,8 @@ const mapDispatchToProps = (dispatch) => {
         setShowGuessResult: guessResult => dispatch(setShowGuessResult(guessResult)),
         setArtistCounter: () => dispatch(setArtistCounter()),
         setCurrentArtist: () => dispatch(setCurrentArtist()),
-        incrementScore: () => dispatch(incrementScore())
+        incrementScore: () => dispatch(incrementScore()),
+        setUserFinishedGame: (value) => dispatch(setUserFinishedGame(value))
     };
 };
 

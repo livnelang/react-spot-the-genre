@@ -1,4 +1,4 @@
-import { SET_ARTISTS, SET_CURRENT_ARTIST, SET_SHOW_GUESS_RESULT, SET_ARTIST_COUNTER, INCREMENT_SCORE, SHUFFLE_ARTISTS, RESET_GAME } from "../constants/action-types";
+import { SET_ARTISTS, SET_CURRENT_ARTIST, SET_SHOW_GUESS_RESULT, SET_ARTIST_COUNTER, INCREMENT_SCORE, SHUFFLE_ARTISTS, RESET_GAME, SET_USER_FINISHED_GAME } from "../constants/action-types";
 import jsonData from './genres.json';
 
 
@@ -10,7 +10,8 @@ const initialState = {
     artistCounter: 0,
     currentArtist: null,
     currentGuesses: {},
-    showGuessResult: { displayMessage: false, success: false }
+    showGuessResult: { displayMessage: false, success: false },
+    userFinishedGame: false
 };
 
 function rootReducer(state = initialState, action) {
@@ -52,7 +53,13 @@ function rootReducer(state = initialState, action) {
         return Object.assign({}, state, {
             score: 0,
             artistCounter: 0,
-            showGuessResult: { displayMessage: false, success: false }
+            showGuessResult: { displayMessage: false, success: false } 
+        });
+    }
+
+    if (action.type === SET_USER_FINISHED_GAME) {
+        return Object.assign({}, state, {
+            userFinishedGame: action.payload
         });
     }
 

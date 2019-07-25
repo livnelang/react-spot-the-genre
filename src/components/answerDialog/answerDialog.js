@@ -6,7 +6,6 @@ import { shuffleArtists, resetGame, setCurrentArtist } from "../../actions/index
 
 class AnswerDialog extends PureComponent {
 
-
     playAgain() {
 
         //shuffle artists array ( make it interesting )
@@ -23,10 +22,21 @@ class AnswerDialog extends PureComponent {
 
     render() {
 
-        if (this.props.showGuessResult.success) {
+
+        if (this.props.userFinishedGame) {
+            return (
+                <div className="userWonContainer">
+                    <div>
+                        Congrats! you won the game with sum of: {this.props.score} points!
+                    </div>
+                    <div className="playAgain" onClick={() => { this.playAgain() }}>Play again?</div>
+                </div>
+            )
+        }
+
+        else if (this.props.showGuessResult.success) {
             return (
                 <div className="successDialog">
-                    {/* <p>You answered: {this.props.showGuessResult.success.toString()}</p> */}
                     <span>
                         <FaThumbsUp size="50" />
                     </span>
@@ -36,7 +46,9 @@ class AnswerDialog extends PureComponent {
         else {
             return (
                 <div className="failedDialog">
-                    <p>your score: {this.props.score}</p>
+                    <div className="scoreContainer">
+                        <p>your score: {this.props.score}</p>
+                    </div>
                     <p className="playAgain" onClick={() => { this.playAgain() }}>Play again?</p>
                 </div>
             )
@@ -51,6 +63,7 @@ const mapStateToProps = (state) => {
     return {
         showGuessResult: state.showGuessResult,
         score: state.score,
+        userFinishedGame: state.userFinishedGame
     };
 };
 
