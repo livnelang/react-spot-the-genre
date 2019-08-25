@@ -3,9 +3,11 @@ var spotifyCache = {
     total: 0,
     usedOffset: []
 }
+var templateUrl = 'https://api.spotify.com/v1/search?';
+
 
 var randomRequestOptions = {
-    url: 'https://api.spotify.com/v1/search?',
+    url: '',
     headers: {
         'Authorization': ''
     }
@@ -13,7 +15,6 @@ var randomRequestOptions = {
 
 module.exports = async function (app, path, spotifyApi) {
 
-    setRandomArtistTotal();
 
 
     // C.R.U.D operations
@@ -29,6 +30,8 @@ module.exports = async function (app, path, spotifyApi) {
     async function getRandomArtist(req, res) {
         //verify access token
         await checkAccessToken(spotifyApi);
+        await setRandomArtistTotal();
+
 
 
         var currentNumber;
@@ -68,18 +71,25 @@ module.exports = async function (app, path, spotifyApi) {
     }
 
     function setRandomArtistTotal() {
-        setRandomTotalQueryString();
 
-        randomRequestOptions.headers['Authorization'] = 'Bearer ' + spotifyApi.getAccessToken();
-        request.get(randomRequestOptions, function (error, response, body) {
-            if (!error && response.statusCode === 200) {
-                var data = JSON.parse(body);
-                spotifyCache.total = data.artists.total - 1;
-                console.log('total for random year: ' + spotifyCache.total);
-            } else {
-                console.log(error);
-            }
-        })
+        return new Promise(function (resolve, reject) {
+
+            setRandomTotalQueryString();
+
+            randomRequestOptions.headers['Authorization'] = 'Bearer ' + spotifyApi.getAccessToken();
+            request.get(randomRequestOptions, function (error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    var data = JSON.parse(body);
+                    spotifyCache.total = data.artists.total - 1;
+                    console.log('total for random year: ' + spotifyCache.total);
+                    return resolve();
+                } else {
+                    console.log(error);
+                    return reject();
+                }
+            })
+
+        });
     }
 
 };
@@ -88,27 +98,34 @@ module.exports = async function (app, path, spotifyApi) {
 
 
 function setRandomTotalQueryString() {
-    var queryString = "?q=year%3A";
-    var year = Math.floor(Math.random() * (2001 - 1960) + 1960);
-    var year = 2001;
+    let queryString = "?q=year%3A";
+    var year = Math.floor(Math.random() * (2001 - 1980) + 1980);
+    // let year = 2001;
 
     console.log('year: ' + year);
-    randomRequestOptions.url = randomRequestOptions.url.replace("?", queryString.concat(year).concat("&type=artist&market=US"));
+    randomRequestOptions.url = templateUrl.replace("?", queryString.concat(year).concat("&type=artist&market=US"));
 }
 
 
 
 
 function getImagedArtists(artists) {
-    var image_artists = [];
+    arrayShuffle(artists);
 
-    artists.forEach(artist => {
-        if (artist.images.length > 0) {
-            image_artists.push(artist);
-        }
-    });
+    return artists;
+}
 
-    return image_artists;
+function arrayShuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+
+    a.sort(function (item) {
+        return item.images.length > 0;
+    })
+
+    return a;
 }
 
 
